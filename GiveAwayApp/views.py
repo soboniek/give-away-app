@@ -1,9 +1,17 @@
 from django.shortcuts import render
+from django.views import View
 from django.views.generic import TemplateView
 
+from GiveAwayApp.models import Donation, Institution
 
-class LandingPageView(TemplateView):
-    template_name = 'index.html'
+
+class LandingPageView(View):
+
+    def get(self, request):
+        donations = Donation.objects.count()
+        institutions = Institution.objects.count()
+        return render(request, 'index.html', {'donations': donations,
+                                              'institutions': institutions})
 
 
 class AddDonationView(TemplateView):
