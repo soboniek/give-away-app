@@ -13,7 +13,7 @@ class Institution(models.Model):
         (3, 'Zbiórka lokalna')
     ]
     name = models.CharField(max_length=250)
-    description = models.CharField(max_length=500)
+    description = models.CharField(max_length=80)
     type = models.IntegerField(choices=INSTITUTION_CHOICES,
                                default=1)
     categories = models.ManyToManyField(Category)
