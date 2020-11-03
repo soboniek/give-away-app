@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 
-from GiveAwayApp.views import LandingPageView, AddDonationView, LoginView, RegisterView
+from GiveAwayApp.views import LandingPageView, AddDonationView, LoginView, RegisterView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +26,6 @@ urlpatterns = [
     path('add_donation/', AddDonationView.as_view(), name='add-donation'),
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
+    path('logout', LogoutView.as_view(), name='logout'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
