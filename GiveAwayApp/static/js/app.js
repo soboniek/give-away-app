@@ -252,4 +252,72 @@ document.addEventListener("DOMContentLoaded", function() {
   if (form !== null) {
     new FormSteps(form);
   }
-});
+
+
+
+
+  /**
+   * Show Institutions for chosen Categories
+   */
+  class InstitutionsUpdate {
+    constructor(form) {
+      this.$form = form;
+      // this.$institutions = form.querySelectorAll("#institution-update");
+      this.$save_check = form.querySelector('#save-check');
+      // this.$cat_checkbox = form.querySelectorAll('#cat-checkbox');
+
+      console.log(this.$save_check)
+      // console.log(this.$cat_checkbox)
+      console.log(this.$institutions)
+
+      this.init();
+    }
+
+    /**
+     * Init all methods
+     */
+    init() {
+      this.select_institutions();
+    }
+
+    select_institutions() {
+      /**
+      * Get checked Categories ID
+      */
+      this.$save_check.addEventListener('click', function () {
+        let categories_id = [];
+        form.querySelectorAll('#cat-checkbox').forEach(el => {
+          if (el.checked === true) {
+            categories_id.push(el.value);
+          }
+        })
+
+        /**
+        * Get Institutions with chosen Categories
+        */
+        form.querySelectorAll("#institution-update").forEach(institution => {
+          let institution_categories_id = institution.value
+          let num_of_chosen_categories = categories_id.length
+          let counter = 0
+          categories_id.forEach(cat_id => {
+            if (institution_categories_id.includes(cat_id)) {
+              counter += 1;
+            } else {
+              counter = 0;
+            }
+          })
+
+          if (num_of_chosen_categories === counter) {
+            institution.parentElement.style.display = "block";
+          } else {
+            institution.parentElement.style.display = "none";
+          }
+
+        })
+      })
+    };
+
+  }
+
+  new InstitutionsUpdate(form)
+})
