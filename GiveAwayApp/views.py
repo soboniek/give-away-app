@@ -1,13 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, CreateView
 
 from GiveAwayApp.forms import RegisterForm, LoginForm
-from GiveAwayApp.models import Donation, Institution
+from GiveAwayApp.models import Donation, Institution, Category
 
 
 class LandingPageView(View):
@@ -25,8 +26,13 @@ class LandingPageView(View):
                                               'institutions_local_collection': institutions_local_collection})
 
 
-class AddDonationView(TemplateView):
-    template_name = 'form.html'
+class AddDonationView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        all_categories = Category.objects.all()
+        all_institutions = Institution.objects.all()
+        return render(request, 'form.html', {'all_categories': all_categories,
+                                             'all_institution': all_institutions})
 
 
 class LoginView(FormView):
