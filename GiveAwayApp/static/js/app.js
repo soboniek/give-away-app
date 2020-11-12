@@ -262,13 +262,6 @@ document.addEventListener("DOMContentLoaded", function() {
   class InstitutionsUpdate {
     constructor(form) {
       this.$form = form;
-      // this.$institutions = form.querySelectorAll("#institution-update");
-      this.$save_check = form.querySelector('#save-check');
-      // this.$cat_checkbox = form.querySelectorAll('#cat-checkbox');
-
-      console.log(this.$save_check)
-      // console.log(this.$cat_checkbox)
-      console.log(this.$institutions)
 
       this.init();
     }
@@ -284,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function() {
       /**
       * Get checked Categories ID
       */
-      this.$save_check.addEventListener('click', function () {
+      form.querySelector('#save-check').addEventListener('click', function () {
         let categories_id = [];
         form.querySelectorAll('#cat-checkbox').forEach(el => {
           if (el.checked === true) {
@@ -316,8 +309,65 @@ document.addEventListener("DOMContentLoaded", function() {
         })
       })
     };
+  }
+  new InstitutionsUpdate(form)
+
+
+
+  /**
+   * Show Address and Date
+   */
+  class AddressDate {
+    constructor(form) {
+      this.$form = form;
+
+      this.init();
+    }
+
+    /**
+     * Init all methods
+     */
+    init() {
+      this.address_data();
+    }
+
+    address_data() {
+      /**
+     * Show data user put in form
+     */
+      form.querySelector('#address-data').addEventListener('click', function () {
+        let user_input_bags = form.querySelector('#user-input-bags').value
+        let user_input_foundation = form.querySelector('#user-input-foundation').innerHTML
+        let user_input_street = form.querySelector('#user-input-street').value
+        let user_input_city = form.querySelector('#user-input-city').value
+        let user_input_postcode = form.querySelector('#user-input-postcode').value
+        let user_input_phone = form.querySelector('#user-input-phone').value
+        let user_input_date = form.querySelector('#user-input-date').value
+        let user_input_time = form.querySelector('#user-input-time').value
+        let user_input_notes = form.querySelector('#user-input-notes').value
+
+        form.querySelector('#user-show-bags').innerHTML += user_input_bags
+        form.querySelector('#user-show-foundation').innerHTML += user_input_foundation
+        form.querySelector('#user-show-street').innerHTML = user_input_street
+        form.querySelector('#user-show-city').innerHTML = user_input_city
+        form.querySelector('#user-show-postcode').innerHTML = user_input_postcode
+        form.querySelector('#user-show-phone').innerHTML = user_input_phone
+        form.querySelector('#user-show-date').innerHTML = user_input_date
+        form.querySelector('#user-show-time').innerHTML = user_input_time
+        form.querySelector('#user-show-notes').innerHTML = user_input_notes
+
+
+      })
+
+
+
+    }
+
 
   }
+  new AddressDate(form)
 
-  new InstitutionsUpdate(form)
+
+
+
 })
