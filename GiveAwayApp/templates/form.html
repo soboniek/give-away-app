@@ -8,6 +8,7 @@
 
 
 {% block header %}
+
     <div class="slogan container container--90">
         <div class="slogan--item">
             <h1>
@@ -38,6 +39,9 @@
 
 
 {% block content %}
+
+    <h1>{{ msg }}</h1>
+
 <section class="form--steps">
     <div class="form--steps-instructions">
         <div class="form--steps-container">
@@ -61,7 +65,8 @@
     <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/5</div>
 
-        <form action="form-confirmation.html" method="post">
+        <form id='form-data' method="post" action='.'>
+        {% csrf_token %}
             <!-- STEP 1: class .active is switching steps -->
             <div data-step="1" class="active">
                 <h3>Zaznacz co chcesz oddać:</h3>
@@ -187,12 +192,12 @@
                         <ul>
                             <li>
                                 <span class="icon icon-bag"></span>
-                                <span class="summary--text" id="user-show-bags">Przekazane worki: </span>
+                                <span class="summary--text" id="user-show-bags"></span>
                             </li>
 
                             <li>
                                 <span class="icon icon-hand"></span>
-                                <span class="summary--text" id="user-show-foundation">Dla fundacji: </span>
+                                <span class="summary--text" id="user-show-foundation"></span>
                             </li>
                         </ul>
                     </div>
