@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
       console.log(page);
     }
   }
+
   const helpSection = document.querySelector(".help");
   if (helpSection !== null) {
     new Help(helpSection);
@@ -136,6 +137,7 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     }
   }
+
   document.querySelectorAll(".form-group--dropdown select").forEach(el => {
     new FormSelect(el);
   });
@@ -143,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function() {
   /**
    * Hide elements when clicked on document
    */
-  document.addEventListener("click", function(e) {
+  document.addEventListener("click", function (e) {
     const target = e.target;
     const tagName = target.tagName;
 
@@ -246,8 +248,18 @@ document.addEventListener("DOMContentLoaded", function() {
       e.preventDefault();
       this.currentStep++;
       this.updateForm();
+      document.getElementById('form-data').submit();
+
+      // if (this.currentStep === 6) {
+      //   fetch('http://127.0.0.1:8000/add_donation/', {
+      //     method: 'POST',
+      //     body: new FormData(this.$form.getElementById('form-data'))
+      //   })
+
     }
+
   }
+
   const form = document.querySelector(".form--steps");
   if (form !== null) {
     new FormSteps(form);
@@ -337,7 +349,8 @@ document.addEventListener("DOMContentLoaded", function() {
      */
       form.querySelector('#address-data').addEventListener('click', function () {
         let user_input_bags = form.querySelector('#user-input-bags').value
-        let user_input_foundation = form.querySelector('#user-input-foundation').innerHTML
+        let user_input_foundation = form.querySelector('input[name="organization"]:checked')
+        let foundation = user_input_foundation.nextElementSibling.nextElementSibling.firstElementChild.innerHTML
         let user_input_street = form.querySelector('#user-input-street').value
         let user_input_city = form.querySelector('#user-input-city').value
         let user_input_postcode = form.querySelector('#user-input-postcode').value
@@ -346,8 +359,8 @@ document.addEventListener("DOMContentLoaded", function() {
         let user_input_time = form.querySelector('#user-input-time').value
         let user_input_notes = form.querySelector('#user-input-notes').value
 
-        form.querySelector('#user-show-bags').innerHTML += user_input_bags
-        form.querySelector('#user-show-foundation').innerHTML += user_input_foundation
+        form.querySelector('#user-show-bags').innerHTML = `Przekazane worki: ${user_input_bags}`
+        form.querySelector('#user-show-foundation').innerHTML = `Dla fundacji: ${foundation}`
         form.querySelector('#user-show-street').innerHTML = user_input_street
         form.querySelector('#user-show-city').innerHTML = user_input_city
         form.querySelector('#user-show-postcode').innerHTML = user_input_postcode
@@ -356,18 +369,11 @@ document.addEventListener("DOMContentLoaded", function() {
         form.querySelector('#user-show-time').innerHTML = user_input_time
         form.querySelector('#user-show-notes').innerHTML = user_input_notes
 
-
       })
-
-
 
     }
 
-
   }
   new AddressDate(form)
-
-
-
 
 })

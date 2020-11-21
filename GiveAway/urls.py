@@ -18,12 +18,13 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 
-from GiveAwayApp.views import LandingPageView, AddDonationView, LoginView, RegisterView, LogoutView
+from GiveAwayApp.views import LandingPageView, AddDonationView, LoginView, RegisterView, LogoutView, ConfirmDonationView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', LandingPageView.as_view(), name='landing-page'),
     path('add_donation/', AddDonationView.as_view(), name='add-donation'),
+    path('confirm_donation/', ConfirmDonationView.as_view(), name='confirm-donation'),
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
     path('logout', LogoutView.as_view(), name='logout'),

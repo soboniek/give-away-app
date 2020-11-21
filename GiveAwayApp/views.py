@@ -1,7 +1,10 @@
+import datetime
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -33,6 +36,70 @@ class AddDonationView(LoginRequiredMixin, View):
         all_institutions = Institution.objects.all()
         return render(request, 'form.html', {'all_categories': all_categories,
                                              'all_institution': all_institutions})
+
+    def post(self, request):
+        all_categories = Category.objects.all()
+        all_institutions = Institution.objects.all()
+
+        try:
+            quantity = int(request.POST.get('bags'))
+        except ValueError:
+            msg = 'Wpisz poprawną ilość worków.'
+            return render(request, 'form.html', {'all_categories': all_categories,
+                                                 'all_institution': all_institutions,
+                                                 'msg': msg})
+
+        try:
+            phone_number = int(request.POST.get('phone'))
+        except ValueError:
+            msg = 'Wpisz poprawny numer telefonu.'
+            return render(request, 'form.html', {'all_categories': all_categories,
+                                                 'all_institution': all_institutions,
+                                                 'msg': msg})
+
+        try:
+            zip_code = int(request.POST.get('postcode'))
+        except ValueError:
+            msg = 'Wpisz poprawny kod pocztowy.'
+            return render(request, 'form.html', {'all_categories': all_categories,
+                                                 'all_institution': all_institutions,
+                                                 'msg': msg})
+
+        pick_up_date = request.POST.get('data')
+        date_format = '%Y-%m-%d'
+        try:
+            datetime.datetime.strptime(pick_up_date, date_format)
+        except ValueError:
+            msg = 'Wybierz poprawną datę.'
+            return render(request, 'form.html', {'all_categories': all_categories,
+                                                 'all_institution': all_institutions,
+                                                 'msg': msg})
+
+        pick_up_time = request.POST.get('time')
+        time_format = '%H:%M'
+        try:
+            datetime.datetime.strptime(pick_up_time, time_format)
+        except ValueError:
+            msg = 'Wybierz poprawną godzinę.'
+            return render(request, 'form.html', {'all_categories': all_categories,
+                                                 'all_institution': all_institutions,
+                                                 'msg': msg})
+
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        pick_up_comment = request.POST.get('more_info')
+        institution_id = request.POST.get('organization')
+        user_id = User.objects.get(id=self.request.user.id).id
+
+        Donation.objects.create(quantity=quantity, address=address, phone_number=phone_number, city=city,
+                                zip_code=zip_code, pick_up_date=pick_up_date, pick_up_time=pick_up_time,
+                                pick_up_comment=pick_up_comment, institution_id=institution_id, user_id=user_id)
+
+        return redirect('confirm-donation')
+
+
+class ConfirmDonationView(TemplateView):
+    template_name = 'form-confirmation.html'
 
 
 class LoginView(FormView):
